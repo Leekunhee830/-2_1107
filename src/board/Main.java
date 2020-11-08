@@ -1,5 +1,7 @@
 package board;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Main {
@@ -19,77 +21,160 @@ public class Main {
 
 	public static void main(String[] args) {
 		Scanner sc=new Scanner(System.in);
+		Calendar cal=Calendar.getInstance();
 		
 		String title="";
 		String body="";
-		String check="";
-		int cnt=0;
-		int updateNum=0;
-		int deleteNum=0;
+		String cmd="";
+		int cnt=3;
+		int number=0;
+		
+		Information a1=new Information("1ì œëª©","1ë‚´ìš©",1);
+		Information a2=new Information("2ì œëª©","2ë‚´ìš©",2);
+		Information a3=new Information("3ì œëª©","3ë‚´ìš©",3);
+		
+		aInfor.add(a1);
+		aInfor.add(a2);
+		aInfor.add(a3);
 		
 		while(true) {
-			System.out.print("¸í·É¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
-			check=sc.nextLine();
-			if(check.equals("exit")) {
-				System.out.println("Á¾·á");
+			System.out.print("ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
+			cmd=sc.nextLine();
+			
+			if(cmd.equals("exit")) {
+				System.out.println("ì¢…ë£Œ");
 				break;
 			}
 				
 			
-			if(check.equals("add")) {
-				System.out.print("°Ô½Ã¹° Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+			if(cmd.equals("add")) {
+				System.out.print("ê²Œì‹œë¬¼ ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”: ");
 				title=sc.nextLine();
-				System.out.print("°Ô½Ã¹° ³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+				System.out.print("ê²Œì‹œë¬¼ ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”: ");
 			    body=sc.nextLine();
 			    cnt++;
-			    
+		   
 			    aInfor.add(new Information(title,body,cnt));		    
 			   
-			    System.out.println("°Ô½Ã¹°ÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.");
+			    System.out.println("ê²Œì‹œë¬¼ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			}
 			
-			if(check.equals("list")) {
+			if(cmd.equals("list")) {
 				for(int i=0;i<aInfor.size();i++) {
 					Information info=aInfor.get(i);
-					System.out.println("¹øÈ£ : "+info.getCnt());
-					System.out.println("Á¦¸ñ : "+info.getTitle());
+					System.out.println("ë²ˆí˜¸ : "+info.getCnt());
+					System.out.println("ì œëª© : "+info.getTitle());
+					System.out.println("ì‘ì„±ì: "+info.getWriter());
+					System.out.println("ë“±ë¡ì¼ì: "+info.getYear()
+							+"."+info.getMonth()
+							+"."+info.getDay());
+					System.out.println("ì¡°íšŒìˆ˜:"+info.getpNumber());
 				    System.out.println("================================");
 				}
 			}
 			
-			if(check.equals("update")) {
-				System.out.print("¼öÁ¤ÇÒ °Ô½Ã¹° ¹øÈ£:");
-				updateNum=Integer.parseInt(sc.nextLine());
-				int num=gCheck(updateNum);
-				
+			if(cmd.equals("update")) {
+				System.out.print("ìˆ˜ì •í•  ê²Œì‹œë¬¼ë²ˆí˜¸:");
+				number=Integer.parseInt(sc.nextLine());
+				int num=gCheck(number);
 				
 				if(num==-1) {
-					System.out.println("¾ø´Â °Ô½Ã¹° ¹øÈ£ ÀÔ´Ï´Ù.");
+					System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 				}else {
-					System.out.print("Á¦¸ñ : ");
+					System.out.print("ì œëª© : ");
 					title=sc.nextLine();
-				    System.out.print("³»¿ë : ");
+				    System.out.print("ë‚´ìš© : ");
 					body=sc.nextLine();
 						
-					aInfor.set(num,new Information(title,body,updateNum));
-					System.out.println("¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.");
+					aInfor.set(num,new Information(title,body,number));
+					System.out.println("ìˆ˜ì •ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 				}
 
 			}
 			
-			if(check.equals("delete")){
-				System.out.print("»èÁ¦ÇÒ °Ô½Ã¹° ¹øÈ£ :");
-				deleteNum=Integer.parseInt(sc.nextLine());
-				int num=gCheck(deleteNum);
+			if(cmd.equals("delete")){
+				System.out.print("ì‚­ì œí•  ê²Œì‹œë¬¼ë²ˆí˜¸:");
+				number=Integer.parseInt(sc.nextLine());
+				int num=gCheck(number);
 				
 				if(num==-1) {
-					System.out.println("¾ø´Â °Ô½Ã¹° ¹øÈ£ ÀÔ´Ï´Ù.");
+					System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 				}else {
 					aInfor.remove(num);
-					System.out.println("°Ô½Ã¹°ÀÌ »èÁ¦ µÇ¾ú½À´Ï´Ù.");
+					System.out.println("ê²Œì‹œë¬¼ì´ ì‚­ì œë˜ì—ˆìŠµë‹ˆë‹¤.");
 				}
-
 			}
+			
+			if(cmd.equals("read")) {
+				System.out.print("ê²Œì‹œë¬¼ ë²ˆí˜¸:");
+				number=Integer.parseInt(sc.nextLine());
+				int num=gCheck(number);
+				
+				if(num==-1) {
+					System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ì…ë‹ˆë‹¤.");
+				}else {
+					int pCheck=aInfor.get(num).getpNumber();
+					pCheck++;
+					aInfor.get(num).setpNumber(pCheck);
+					
+					System.out.println("======="+aInfor.get(num).getCnt()+"ë²ˆ ê²Œì‹œë¬¼=======");
+					System.out.println(aInfor.get(num).getCnt());
+					System.out.println(aInfor.get(num).getTitle());
+					System.out.println(aInfor.get(num).getBody());
+					System.out.println("========================");
+				}
+			}
+			
+			if(cmd.equals("search")) {
+				System.out.print("ê²€ìƒ‰ í•­ëª©ì„ ì„ íƒí•´ì£¼ì„¸ìš”(1.ì œëª© , 2.ë‚´ìš© , 3.ì œëª©+ë‚´ìš© , 4.ì‘ì„±ì): ");
+                number=Integer.parseInt(sc.nextLine());
+                if(number>5&&number<0) {
+                	System.out.println("ì—†ëŠ” ë²ˆí˜¸ì…ë‹ˆë‹¤.");
+                }
+                System.out.print("ê²€ìƒ‰ í‚¤ì›Œë“œë¥¼ ì…ë ¥í•˜ì„¸ìš”:");
+                String search=sc.nextLine();
+                
+                switch(number) {
+                case 1:
+                	for(int i=0;i<aInfor.size();i++) {
+                		if(aInfor.get(i).getTitle().contains(search)) {
+                			System.out.println("ë²ˆí˜¸: "+aInfor.get(i).getCnt());
+                			System.out.println("ì œëª©: "+aInfor.get(i).getTitle());
+                		}
+                	}    	
+                	break;
+                case 2:
+                	for(int i=0;i<aInfor.size();i++) {
+                		if(aInfor.get(i).getBody().contains(search)) {
+                			System.out.println("ë²ˆí˜¸: "+aInfor.get(i).getCnt());
+                			System.out.println("ì œëª©: "+aInfor.get(i).getTitle());
+                		}
+                	}    	
+                	break;
+                case 3:
+                	for(int i=0;i<aInfor.size();i++) {
+                		if(aInfor.get(i).getBody().contains(search)||aInfor.get(i).getTitle().contains(search)) {
+                			System.out.println("ë²ˆí˜¸: "+aInfor.get(i).getCnt());
+                			System.out.println("ì œëª©: "+aInfor.get(i).getTitle());
+                		}
+                	}    	
+                	break;
+                case 4:
+                	for(int i=0;i<aInfor.size();i++) {
+                		if(aInfor.get(i).getWriter().contains(search)) {
+                			System.out.println("ë²ˆí˜¸: "+aInfor.get(i).getCnt());
+                			System.out.println("ì œëª©: "+aInfor.get(i).getTitle());
+                		}
+                	}    	
+                	break;
+                }
+				
+				
+			}
+			
+			
+			
+			
 		}
 	}
 }
