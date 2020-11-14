@@ -6,16 +6,29 @@ import java.util.Date;
 import java.util.Scanner;
 
 import dto.BoardVO;
+import dto.CommentVO;
 
 public class BoardDAO {
 	
 	Scanner sc=new Scanner(System.in);
+	SimpleDateFormat format1=new SimpleDateFormat("yyyy.MM.dd");
 	private ArrayList<BoardVO> arBoard=new ArrayList<>();
+	private ArrayList<CommentVO> arComment=new ArrayList<>();
+	
 	
 	public void index() {
 		//view
+		Date time=new Date();
+		String day=format1.format(time);
+		BoardVO board1=new BoardVO("ì œëª©1","ë‚´ìš©1",day);
+		BoardVO board2=new BoardVO("ì œëª©2","ë‚´ìš©2",day);
+		BoardVO board3=new BoardVO("ì œëª©3","ë‚´ìš©3",day);
+		arBoard.add(board1);
+		arBoard.add(board2);
+		arBoard.add(board3);
+		
 		while(true) {
-			System.out.print("¸í·É¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+			System.out.print("ëª…ë ¹ì–´ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 			String check=sc.nextLine();
 			if(check.equals("exit")) {
 				break;
@@ -41,7 +54,7 @@ public class BoardDAO {
 				search();
 				break;
 			default:
-				System.out.println("¸í·É¾î¸¦ Àß¸ø ÀÔ·ÂÇÏ¿´½À´Ï´Ù.");
+				System.out.println("ëª…ë ¹ì–´ë¥¼ ì˜ëª» ì…ë ¥í•˜ì˜€ìŠµë‹ˆë‹¤.");
 				break;
 			}
 		}
@@ -58,102 +71,155 @@ public class BoardDAO {
 		return cNum;
 	}
 	
+	public void printArticle(int cNum) {
+		System.out.println("ë²ˆí˜¸  : "+arBoard.get(cNum).getNum());
+		System.out.println("ì œëª© : "+arBoard.get(cNum).getTitle());
+		System.out.println("ì‘ì„±ì : "+arBoard.get(cNum).getWriter());
+		System.out.println("ë“±ë¡ë‚ ì§œ : "+arBoard.get(cNum).getDay());
+		System.out.println("ì¡°íšŒìˆ˜ : "+arBoard.get(cNum).getViews());
+		System.out.println("==============================");
+		System.out.println("------------ëŒ“ê¸€-------------");
+		for(int i=0;i<arComment.size();i++) {
+			if(arBoard.get(cNum).getNum()==arComment.get(i).getParetId()) {
+				System.out.println("ë‚´ìš© : "+arComment.get(i).getBody());
+				System.out.println("ì‘ì„±ì : "+arComment.get(i).getWriter());
+				System.out.println("ì‘ì„±ì¼ : "+arComment.get(i).getRegDate());
+				
+			}
+		}
+		
+	}
+	
 	public void add() {
-		SimpleDateFormat format1=new SimpleDateFormat("yyyy.MM.dd");
 		Date time=new Date();
-		System.out.print("°Ô½Ã¹° Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+		System.out.print("ê²Œì‹œë¬¼ ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 		String title=sc.nextLine();
-		System.out.print("°Ô½Ã¹° ³»¿ëÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+		System.out.print("ê²Œì‹œë¬¼ ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 		String body=sc.nextLine();
 		String day=format1.format(time);
 		BoardVO board=new BoardVO(title,body,day);
 		arBoard.add(board);
-		System.out.println("°Ô½Ã¹°ÀÌ µî·ÏµÇ¾ú½À´Ï´Ù.");
+		System.out.println("ê²Œì‹œë¬¼ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 	}
 	
 	public void list() {
 		for(int i=0;i<arBoard.size();i++) {
-			System.out.println("¹øÈ£  : "+arBoard.get(i).getNum());
-			System.out.println("Á¦¸ñ : "+arBoard.get(i).getTitle());
-			System.out.println("ÀÛ¼ºÀÚ : "+arBoard.get(i).getWriter());
-			System.out.println("µî·Ï³¯Â¥ : "+arBoard.get(i).getDay());
-			System.out.println("Á¶È¸¼ö : "+arBoard.get(i).getViews());
+			System.out.println("ë²ˆí˜¸  : "+arBoard.get(i).getNum());
+			System.out.println("ì œëª© : "+arBoard.get(i).getTitle());
+			System.out.println("ì‘ì„±ì : "+arBoard.get(i).getWriter());
+			System.out.println("ë“±ë¡ë‚ ì§œ : "+arBoard.get(i).getDay());
+			System.out.println("ì¡°íšŒìˆ˜ : "+arBoard.get(i).getViews());
 			System.out.println("==============================");
 		}
 	}
 	
 	public void update() {
 		 
-		System.out.print("¼öÁ¤ÇÒ °Ô½Ã¹° ¹øÈ£ : ");
+		System.out.print("ìˆ˜ì •í•  ê²Œì‹œë¬¼ ë²ˆí˜¸ : ");
 		int num=Integer.parseInt(sc.nextLine());
 		int cNum=searchCheck(num);
-		
+
 		if(cNum==-1) {
-			System.out.println("¾ø´Â °Ô½Ã¹° ¹øÈ£ ÀÔ´Ï´Ù.");
+			System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ ì…ë‹ˆë‹¤.");
 		}else {
-			System.out.print("Á¦¸ñ : ");
+			System.out.print("ì œëª© : ");
 			String title=sc.nextLine();
-			System.out.print("³»¿ë : ");
+			System.out.print("ë‚´ìš© : ");
 			String body=sc.nextLine();
 			arBoard.get(cNum).setTitle(title);
 			arBoard.get(cNum).setBody(body);
-			System.out.println("¼öÁ¤ÀÌ ¿Ï·á µÇ¾ú½À´Ï´Ù.");
+			System.out.println("ìˆ˜ì •ì´ ì™„ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		}
 	}
 	
 	public void delete() {
-		System.out.print("»èÁ¦ÇÒ °Ô½Ã¹° ¹øÈ£ : ");
+		System.out.print("ì‚­ì œí•  ê²Œì‹œë¬¼ ë²ˆí˜¸ : ");
 		int num=Integer.parseInt(sc.nextLine());
 		int cNum=searchCheck(num);
-		
+
 		if(cNum==-1) {
-			System.out.println("¾ø´Â °Ô½Ã¹° ¹øÈ£ ÀÔ´Ï´Ù.");
+			System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ ì…ë‹ˆë‹¤.");
 		}else {
 			arBoard.remove(cNum);
-			System.out.println("»èÁ¦°¡ ¿Ï·á µÇ¾ú½À´Ï´Ù.");
+			System.out.println("ì‚­ì œê°€ ì™„ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
 		}
 	}
 	
 	public void read() {
-		System.out.print("»ó¼¼º¸±â ÇÒ °Ô½Ã¹° ¹øÈ£ : ");
+		System.out.print("ìƒì„¸ë³´ê¸° í•  ê²Œì‹œë¬¼ ë²ˆí˜¸ : ");
 		int num=Integer.parseInt(sc.nextLine());
 		int cNum=searchCheck(num);	
-	
+
 		if(cNum==-1) {
-			System.out.println("¾ø´Â °Ô½Ã¹° ¹øÈ£ ÀÔ´Ï´Ù.");
+			System.out.println("ì—†ëŠ” ê²Œì‹œë¬¼ ë²ˆí˜¸ ì…ë‹ˆë‹¤.");
 		}else {
-			System.out.println("====="+arBoard.get(cNum).getNum()+"¹ø °Ô½Ã¹°"+"=====");
-			System.out.println("¹øÈ£: "+arBoard.get(cNum).getNum());
-			System.out.println("Á¦¸ñ: "+arBoard.get(cNum).getTitle());
-			System.out.println("³»¿ë: "+arBoard.get(cNum).getBody());
-			System.out.println("===============");
+			System.out.println("====="+arBoard.get(cNum).getNum()+"ë²ˆ ê²Œì‹œë¬¼"+"=====");
+			printArticle(cNum);
+			
 			arBoard.get(cNum).setViews(arBoard.get(cNum).getViews()+1);
+			
+			while(true) {
+				System.out.print("ìƒì„¸ë³´ê¸° ê¸°ëŠ¥ì„ ì„ íƒí•´ì£¼ì„¸ìš”(1.ëŒ“ê¸€ ë“±ë¡, 2.ì¢‹ì•„ìš”, 3.ìˆ˜ì •, 4.ì‚­ì œ, 5.ëª©ë¡ìœ¼ë¡œ) : ");
+				int num2=Integer.parseInt(sc.nextLine());
+				if(num2==5) {
+					break;
+				}
+				switch(num2) {
+				case 1:
+					System.out.println("ëŒ“ê¸€ ë‚´ìš©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”:");
+					String comment=sc.nextLine();
+					Date time=new Date();
+					String day=format1.format(time);
+					CommentVO cm=new CommentVO(arBoard.get(cNum).getNum(), "ì´ìˆœì‹ ", comment, day);
+					arComment.add(cm);
+					System.out.println("ëŒ“ê¸€ì´ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
+					printArticle(cNum);
+				break;
+				case 2:
+					break;
+				case 3:
+					System.out.print("ì œëª© : ");
+					String title=sc.nextLine();
+					System.out.print("ë‚´ìš© : ");
+					String body=sc.nextLine();
+					arBoard.get(cNum).setTitle(title);
+					arBoard.get(cNum).setBody(body);
+					System.out.println("ìˆ˜ì •ì´ ì™„ë£Œ ë˜ì—ˆìŠµë‹ˆë‹¤.");
+					break;
+				case 4:
+					arBoard.remove(cNum);
+					break;
+				default:
+					System.out.println("ì—†ëŠ” ê¸°ëŠ¥ì…ë‹ˆë‹¤.");
+						break;
+				}
+			}
 		}
 	}
 	
 	public void search() {
 		String keyword="";
-		System.out.print("°Ë»ö Ç×¸ñÀ» ¼±ÅÃÇØÁÖ¼¼¿ä (1.Á¦¸ñ, 2.³»¿ë, 3.Á¦¸ñ+³»¿ë, 4.ÀÛ¼ºÀÚ): ");
+		System.out.print("ê²€ìƒ‰ í•­ëª©ì„ ì„ íƒí•´ì£¼ì„¸ìš” (1.ì œëª©, 2.ë‚´ìš©, 3.ì œëª©+ë‚´ìš©, 4.ì‘ì„±ì): ");
 		int num=Integer.parseInt(sc.nextLine());
 		if(num<1 || num>4) {
-			System.out.println("¾ø´Â Ç×¸ñÀÔ´Ï´Ù.");
+			System.out.println("ì—†ëŠ” í•­ëª©ì…ë‹ˆë‹¤.");
 		}else {
-			System.out.print("°Ë»ö Å°¿öµå¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä : ");
+			System.out.print("ê²€ìƒ‰ í‚¤ì›Œë“œë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš” : ");
 			keyword=sc.nextLine();
 			switch(num) {
 			case 1:
 				for(int i=0;i<arBoard.size();i++) {
 					if(arBoard.get(i).getTitle().contains(keyword)) {
-						System.out.println("¹øÈ£ : "+arBoard.get(i).getNum());
-						System.out.println("Á¦¸ñ : "+arBoard.get(i).getTitle());
+						System.out.println("ë²ˆí˜¸ : "+arBoard.get(i).getNum());
+						System.out.println("ì œëª© : "+arBoard.get(i).getTitle());
 					}
 				}
 				break;
 			case 2:
 				for(int i=0;i<arBoard.size();i++) {
 					if(arBoard.get(i).getBody().contains(keyword)) {
-						System.out.println("¹øÈ£ : "+arBoard.get(i).getNum());
-						System.out.println("Á¦¸ñ : "+arBoard.get(i).getTitle());
+						System.out.println("ë²ˆí˜¸ : "+arBoard.get(i).getNum());
+						System.out.println("ì œëª© : "+arBoard.get(i).getTitle());
 					}
 				}
 				break;
@@ -161,16 +227,16 @@ public class BoardDAO {
 				for(int i=0;i<arBoard.size();i++) {
 					if(arBoard.get(i).getBody().contains(keyword) ||
 							arBoard.get(i).getTitle().contains(keyword)) {
-						System.out.println("¹øÈ£ : "+arBoard.get(i).getNum());
-						System.out.println("Á¦¸ñ : "+arBoard.get(i).getTitle());
+						System.out.println("ë²ˆí˜¸ : "+arBoard.get(i).getNum());
+						System.out.println("ì œëª© : "+arBoard.get(i).getTitle());
 					}
 				}
 				break;
 			case 4:
 				for(int i=0;i<arBoard.size();i++) {
 					if(arBoard.get(i).getWriter().contains(keyword)) {
-						System.out.println("¹øÈ£ : "+arBoard.get(i).getNum());
-						System.out.println("Á¦¸ñ : "+arBoard.get(i).getTitle());
+						System.out.println("ë²ˆí˜¸ : "+arBoard.get(i).getNum());
+						System.out.println("ì œëª© : "+arBoard.get(i).getTitle());
 					}
 				}
 				break;
