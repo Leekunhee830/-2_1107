@@ -12,12 +12,12 @@ public class BoardVO {
 	private ArrayList<String> comment;
 	private static int pluse;
 	
-	public BoardVO(String title,String body,String day){
+	public BoardVO(String title,String body,String writer,String day){
 		this.num=++pluse;
 		this.title=title;
 		this.body=body;
 		this.day=day;
-		this.writer="익명";
+		this.writer=writer;
 	}
 	
 	

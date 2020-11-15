@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import dto.BoardVO;
 import dto.CommentVO;
+import dto.MemberVO;
 
 public class BoardDAO {
 	
@@ -16,27 +17,28 @@ public class BoardDAO {
 	private ArrayList<CommentVO> arComment=new ArrayList<>();
 	
 	
-	public void index() {
+	public void index(MemberVO member) {
 		//view
 		Date time=new Date();
 		String day=format1.format(time);
-		BoardVO board1=new BoardVO("제목1","내용1",day);
-		BoardVO board2=new BoardVO("제목2","내용2",day);
-		BoardVO board3=new BoardVO("제목3","내용3",day);
-		arBoard.add(board1);
-		arBoard.add(board2);
-		arBoard.add(board3);
+//		BoardVO board1=new BoardVO("제목1","내용1",day);
+//		BoardVO board2=new BoardVO("제목2","내용2",day);
+//		BoardVO board3=new BoardVO("제목3","내용3",day);
+//		arBoard.add(board1);
+//		arBoard.add(board2);
+//		arBoard.add(board3);
 		
 		while(true) {
-			System.out.print("명령어를 입력해주세요 : ");
+			System.out.print("명령어를 입력해주세요["+member.getLoginId()+"("+member.getNickname()+")] : ");
 			String check=sc.nextLine();
-			if(check.equals("exit")) {
+			if(check.equals("logout")) {
+				System.out.println("로그아웃 되셨습니다.");
 				break;
 			}
 			
 			switch(check) {
 			case "add":
-				add();
+				add(member);
 				break;
 			case "list":
 				list();
@@ -48,7 +50,7 @@ public class BoardDAO {
 				delete();
 				break;
 			case "read":
-				read();
+				read(member);
 				break;
 			case "search":
 				search();
@@ -90,14 +92,14 @@ public class BoardDAO {
 		
 	}
 	
-	public void add() {
+	public void add(MemberVO member) {
 		Date time=new Date();
 		System.out.print("게시물 제목을 입력해주세요 : ");
 		String title=sc.nextLine();
 		System.out.print("게시물 내용을 입력해주세요 : ");
 		String body=sc.nextLine();
 		String day=format1.format(time);
-		BoardVO board=new BoardVO(title,body,day);
+		BoardVO board=new BoardVO(title,body,member.getNickname(),day);
 		arBoard.add(board);
 		System.out.println("게시물이 등록되었습니다.");
 	}
@@ -145,7 +147,7 @@ public class BoardDAO {
 		}
 	}
 	
-	public void read() {
+	public void read(MemberVO member) {
 		System.out.print("상세보기 할 게시물 번호 : ");
 		int num=Integer.parseInt(sc.nextLine());
 		int cNum=searchCheck(num);	
@@ -170,7 +172,7 @@ public class BoardDAO {
 					String comment=sc.nextLine();
 					Date time=new Date();
 					String day=format1.format(time);
-					CommentVO cm=new CommentVO(arBoard.get(cNum).getNum(), "이순신", comment, day);
+					CommentVO cm=new CommentVO(arBoard.get(cNum).getNum(),member.getNickname(), comment, day);
 					arComment.add(cm);
 					System.out.println("댓글이 등록되었습니다.");
 					printArticle(cNum);
