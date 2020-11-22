@@ -7,6 +7,7 @@ public class MemberVO {
 	private String loginPw;
 	private String nickname;
 	
+	
 	public MemberVO(String loginId,String loginPw,String nickname) {
 		this.loginId=loginId;
 		this.loginPw=loginPw;
